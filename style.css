@@ -1,0 +1,80 @@
+:root {
+  --cor-primaria: #ffc107;
+  --cor-escura: #121417;
+}
+
+/* Previne rolagem horizontal indevida e aplica rolagem suave */
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Compensação da navbar fixa no topo */
+body {
+  padding-top: 56px;
+}
+
+/* Seção Hero (Banner de Boas-Vindas) */
+.hero-section {
+  min-height: 65vh;
+  background: linear-gradient(135deg, rgba(18, 20, 23, 0.92) 0%, rgba(18, 20, 23, 0.78) 100%),
+              url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  border-bottom: 4px solid var(--cor-primaria);
+}
+
+.fw-extrabold {
+  font-weight: 800;
+}
+
+/* Estilização dos Cards do Catálogo */
+.card-produto {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.card-produto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.card-img-wrapper {
+  height: 210px;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.card-produto:hover .card-img-wrapper img {
+  transform: scale(1.06);
+}
+
+.badge-categoria {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+/* Preço em destaque */
+.preco-destaque {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--cor-escura);
+}
+
+/* Ajustes na tabela nutricional do Modal */
+.tabela-nutricional th {
+  background-color: #f1f3f5;
+  font-weight: 600;
+}

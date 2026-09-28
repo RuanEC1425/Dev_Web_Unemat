@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo interativo de suplementos alimentares para alta performance, hipertrofia e saúde.">
+  <title>IronLab Suplementos | Catálogo Interativo</title>
+
+  <!-- Bootstrap 5.3 CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Script Principal da Aplicação -->
+  <script src="app.js" defer></script>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+  <!-- CABEÇALHO E NAVEGAÇÃO -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm" aria-label="Navegação Principal">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#inicio">
+          <i class="bi bi-lightning-charge-fill text-warning"></i>
+          <span>IRON<span class="text-warning">LAB</span></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacao" aria-controls="menuNavegacao" aria-expanded="false" aria-label="Alternar menu de navegação">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menuNavegacao">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#inicio">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#catalogo">Catálogo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#sobre">Sobre o Projeto</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-grow-1">
+
+    <section id="inicio" class="hero-section text-white d-flex align-items-center">
+      <div class="container py-5">
+        <div class="row align-items-center">
+          <div class="col-lg-7 text-center text-lg-start">
+            <span class="badge bg-warning text-dark fw-bold mb-3 px-3 py-2 text-uppercase">Ciência & Performance</span>
+            <h1 class="display-4 fw-extrabold mb-3">Potencialize seus resultados com suplementação de verdade</h1>
+            <p class="lead mb-4 text-light opacity-90">
+              Explore nosso catálogo interativo de proteínas, aminoácidos, pré-treinos e vitaminas formulados com matéria-prima de alta pureza.
+            </p>
+            <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+              <a href="#catalogo" class="btn btn-warning btn-lg fw-bold px-4">
+                <i class="bi bi-bag-check-fill me-2"></i>Explorar Catálogo
+              </a>
+              <a href="#sobre" class="btn btn-outline-light btn-lg px-4">
+                Conhecer Projeto
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO (FILTROS, BUSCA E LISTAGEM) -->
+    <section id="catalogo" class="py-5">
+      <div class="container">
+        <div class="row mb-4 align-items-end">
+          <div class="col-md-6">
+            <h2 class="fw-bold mb-1">Catálogo de Suplementos</h2>
+            <p class="text-muted mb-0">Busque ou filtre por objetivo nutricional e consulte a tabela técnica de cada item.</p>
+          </div>
+          <div class="col-md-6 text-md-end mt-2 mt-md-0">
+            <span id="contador-itens" class="badge bg-dark fs-6">Carregando produtos...</span>
+          </div>
+        </div>
+
+        <!-- Barra de Busca e Filtro -->
+        <div class="card border-0 shadow-sm mb-4 bg-white">
+          <div class="card-body p-3 p-md-4">
+            <form id="form-filtros" class="row g-3 align-items-end" onsubmit="event.preventDefault();">
+              <!-- Campo de Busca por Texto -->
+              <div class="col-12 col-md-6">
+                <label for="input-busca" class="form-label fw-semibold">
+                  <i class="bi bi-search me-1 text-warning"></i>Buscar suplemento
+                </label>
+                <input 
+                  type="search" 
+                  id="input-busca" 
+                  class="form-control" 
+                  placeholder="Ex.: Whey, Creatina, Pré-treino..."
+                  autocomplete="off"
+                >
+              </div>
+
+              <!-- Seleção de Categoria -->
+              <div class="col-12 col-sm-8 col-md-4">
+                <label for="select-categoria" class="form-label fw-semibold">
+                  <i class="bi bi-funnel-fill me-1 text-warning"></i>Filtrar por categoria
+                </label>
+                <select id="select-categoria" class="form-select">
+                  <option value="Todas">Todas as categorias</option>
+                  <option value="Proteínas">Proteínas</option>
+                  <option value="Força e Performance">Força e Performance</option>
+                  <option value="Energia">Energia</option>
+                  <option value="Aminoácidos">Aminoácidos</option>
+                  <option value="Vitaminas">Vitaminas</option>
+                </select>
+              </div>
+
+              <!-- Botão Limpar -->
+              <div class="col-12 col-sm-4 col-md-2 d-grid">
+                <button type="button" id="btn-limpar" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i>Limpar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Loading Spinner da Listagem -->
+        <div id="loading-catalogo" class="text-center py-5 d-none" role="status" aria-live="polite">
+          <div class="spinner-border text-warning" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Carregando catálogo...</span>
+          </div>
+          <p class="mt-3 fw-semibold text-secondary">Carregando suplementos...</p>
+        </div>
+
+        <!-- Mensagem de Erro de Requisição -->
+        <div id="erro-catalogo" class="alert alert-danger text-center p-4 d-none" role="alert">
+          <i class="bi bi-exclamation-triangle-fill fs-1 d-block mb-2"></i>
+          <h3 class="h5 fw-bold">Ops! Não foi possível carregar o catálogo</h3>
+          <p id="erro-catalogo-msg" class="mb-3">Verifique sua conexão ou se o projeto está rodando em um servidor local (Live Server).</p>
+          <button type="button" id="btn-tentar-novamente" class="btn btn-danger fw-semibold">
+            <i class="bi bi-arrow-clockwise me-1"></i>Tentar Novamente
+          </button>
+        </div>
+
+        <!--Mensagem de Busca Sem Resultados -->
+        <div id="vazio-catalogo" class="text-center py-5 bg-white rounded shadow-sm d-none">
+          <i class="bi bi-inbox fs-1 text-muted d-block mb-2"></i>
+          <h3 class="h5 fw-bold">Nenhum suplemento encontrado</h3>
+          <p class="text-muted mb-3">Não encontramos resultados para os filtros selecionados.</p>
+          <button type="button" id="btn-resetar-busca" class="btn btn-warning fw-semibold">
+            Exibir todos os produtos
+          </button>
+        </div>
+
+        <!-- GRID DE CARDS DOS PRODUTOS -->
+        <div id="lista-produtos" class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+          <!-- Cards inseridos dinamicamente via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- COMPONENTE INTERATIVO BOOTSTRAP 5: MODAL DE DETALHES -->
+  <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-labelledby="modalDetalhesTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-dark text-white">
+          <h2 class="modal-title fs-5 fw-bold" id="modalDetalhesTitulo">Detalhes do Produto</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar janela de detalhes"></button>
+        </div>
+        <div class="modal-body p-4">
+
+          <!-- Loading Spinner do Modal (Nova requisição AJAX) -->
+          <div id="loading-modal" class="text-center py-5 d-none" role="status" aria-live="polite">
+            <div class="spinner-border text-warning" style="width: 2.5rem; height: 2.5rem;">
+              <span class="visually-hidden">Buscando informações nutricionais...</span>
+            </div>
+            <p class="mt-3 text-muted mb-0">Buscando informações nutricionais detalhadas...</p>
+          </div>
+
+          <!-- Erro do Modal -->
+          <div id="erro-modal" class="alert alert-danger text-center d-none" role="alert">
+            <p class="mb-2 fw-semibold">Falha ao carregar os detalhes complementares deste suplemento.</p>
+            <button type="button" id="btn-tentar-modal" class="btn btn-sm btn-danger">
+              <i class="bi bi-arrow-clockwise me-1"></i>Tentar Novamente
+            </button>
+          </div>
+
+          <!-- Conteúdo preenchido via AJAX -->
+          <div id="conteudo-modal" class="d-none">
+            <!-- Injetado pelo JS -->
+          </div>
+
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFORMAÇÕES SOBRE O PROJETO (RODAPÉ / SOBRE) -->
+  <footer id="sobre" class="bg-dark text-light pt-5 pb-4 mt-auto">
+    <div class="container">
+      <div class="row g-4 pb-4 border-bottom border-secondary">
+        <div class="col-lg-5">
+          <h2 class="h5 fw-bold text-warning mb-3">
+            <i class="bi bi-lightning-charge-fill me-1"></i>Sobre o Projeto IronLab
+          </h2>
+          <p class="text-secondary-emphasis small text-white">
+            Este catálogo interativo foi desenvolvido como aplicação prática de Front-end utilizando HTML5 semântico, estilização com CSS3 e Bootstrap 5, além de consumo assíncrono de dados JSON com JavaScript puro (ES6+ Fetch API).
+          </p>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <h3 class="h6 fw-bold text-uppercase mb-3 text-white">Especificações Técnicas</h3>
+          <ul class="list-unstyled small text-secondary-emphasis mb-0">
+            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i>Layout 100% Responsivo (Mobile-First)</li>
+            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i>Dupla Requisição AJAX (Listagem + Detalhes)</li>
+            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i>Filtro Combinado em Tempo Real</li>
+            <li><i class="bi bi-check2-circle text-warning me-2"></i>HTML Semântico e Acessibilidade (WAI-ARIA)</li>
+          </ul>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <h3 class="h6 fw-bold text-uppercase mb-3 text-white">Navegação Rápida</h3>
+          <ul class="list-unstyled small mb-0">
+            <li class="mb-2"><a href="#inicio" class="text-decoration-none text-secondary-emphasis link-warning">Início / Apresentação</a></li>
+            <li class="mb-2"><a href="#catalogo" class="text-decoration-none text-secondary-emphasis link-warning">Catálogo de Suplementos</a></li>
+            <li><a href="#sobre" class="text-decoration-none text-secondary-emphasis link-warning">Sobre o Projeto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center pt-3 small text-secondary">
+        <p class="mb-0">&copy; 2026 IronLab Suplementos. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5.3 JS Bundle via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+</body>
+</html>
